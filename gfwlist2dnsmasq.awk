@@ -10,6 +10,7 @@ function add(domain) {
 function extract(line, original_line) {
 	sub(/.*:\/\//, "", line) # remove everything till ://, such as http:// https://
 	sub(/\/.*/, "", line)    # remove everything from /
+	sub(/:.*/, "", line)     # remove everything from :
 	sub(/\*/, "", line)      # remove *
 	sub(/^\./, "", line)     # remove leading dot
 

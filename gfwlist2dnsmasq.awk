@@ -35,9 +35,10 @@ function extract_regex(line, original_line) {
 			extract_regex(expanded_line, original_line)
 		}
 	} else {
-		sub(/.*:\\\/\\\//, "", line)    # remove everything till :\/\/
+		sub(/.*:\\\/\\\//, "", line)    # remove everything till :\/\/ in regex, :// in plain text, such as http:// https://
 		gsub(/\([^\)]+\)\*?/, "", line) # remove (...)*? such as ([^\/]+\.)
 		gsub(/\[.*\]\+/, "", line)      # remove [...]
+		sub(/\\\/.*/, "", line)         # remove everything from \/ in regex, / in plaint text
 		gsub(/\\\./, ".", line)         # replace \. to .
 		extract(line, original_line)
 	}

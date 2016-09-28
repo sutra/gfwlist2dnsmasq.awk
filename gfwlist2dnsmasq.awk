@@ -27,11 +27,11 @@ function extract_regex(line, original_line) {
 	# Expand the lines like (aa|bb|cc) into multiple records
 	pos = match(line, /\([a-zA-Z0-9\.\|]+\)/)
 	if (pos != 0) {
-		bracket = substr(line, RSTART + 1, RLENGTH - 2)
-		n = split(bracket, a, "|")
+		in_bracket = substr(line, RSTART + 1, RLENGTH - 2)
+		n = split(in_bracket, arr, "|")
 		for (i = 1; i <= n; i++) {
 			expanded_line = line
-			sub(/\([a-zA-Z0-9\.\|]+\)/, a[i], expanded_line)
+			sub(/\([a-zA-Z0-9\.\|]+\)/, arr[i], expanded_line)
 			extract_regex(expanded_line, original_line)
 		}
 	} else {

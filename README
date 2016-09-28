@@ -1,0 +1,20 @@
+Convert gfwlist into dnsmasq configuration file.
+
+How to use:
+
+curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
+    | base64 -D \
+    | awk -v 'host=127.0.0.1' -v 'port=5353' -f gfwlist2dnsmasq.awk \
+    > gfwlist.conf
+
+or with custom rule file /path/to/user_rule.txt:
+
+curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
+    | base64 -D \
+    | awk -v 'host=127.0.0.1' -v 'port=5353' -f gfwlist2dnsmasq.awk - /path/to/user_rule.txt \
+    > gfwlist.conf
+
+user_rule.txt example:
+# comment line
+! comment line as well
+example.net

@@ -3,6 +3,7 @@
 BEGIN {
 	host = host != "" ? host : "127.0.0.1"
 	port = port != "" ? port : 5353
+	format = format != "" ? format : "server=/.%s/%s#%d\n"
 
 	"date \"+%Y-%m-%d %H:%M:%S\"" | getline now
 	print "# gfw list ipset rules for dnsmasq"
@@ -32,7 +33,7 @@ BEGIN {
 
 END {
 	for (i = 1; i <= domain_count; i++) {
-		printf "server=/.%s/%s#%d\n", domains[i], host, port | "sort | uniq"
+		printf format, domains[i], host, port | "sort | uniq"
 	}
 	close("sort | uniq")
 }

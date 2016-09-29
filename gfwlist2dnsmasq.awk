@@ -11,25 +11,22 @@ BEGIN {
 }
 
 {
-	original_line = $0
-
 	if (/^$/ || /^#/ || /^\!/ || /^\[/ || /^@@/) {
-		# Empty line, line starts with #, !, [ or @@
+		# Empty line, or line starts with #, !, [ or @@
 		# https://adblockplus.org/en/filters#comments
 		# https://adblockplus.org/en/filters#whitelist
 	} else if (/(^\|\|)|(^\|)/) {
 		# Line starts with || or |
 		# https://adblockplus.org/en/filters#anchors
 		sub(/(^\|\|)|(^\|)/, "") # remove leading || or |
-		extract($0, original_line)
+		extract($0)
 	} else if (/^\/.*\/$/) {
-		# Line in two slashs, like /.../
-		# regular expressions
+		# Line in two slashs, like /.../, is a regular expression.
 		# https://adblockplus.org/en/filters#regexps
 		gsub(/(^\/)|(\/$)/, "") # remove leading and tailing /
-		extract_regex($0, original_line)
+		extract_regex($0)
 	} else {
-		extract($0, original_line)
+		extract($0)
 	}
 }
 
@@ -41,7 +38,7 @@ END {
 }
 
 # Extract domain name from non-regex line
-function extract(line, original_line) {
+function extract(line) {
 	sub(/.*:\/\//, "", line) # remove everything till ://, such as http:// https://
 	sub(/\/.*/, "", line)    # remove everything from /
 	sub(/:.*/, "", line)     # remove everything from :
@@ -51,13 +48,13 @@ function extract(line, original_line) {
 	if (match(line, /([A-Za-z0-9\-]+\.)+[A-Za-z0-9\-]+/)) {
 		domains[++domain_count] = line
 	} else {
-		print "[WARN] <NR>" NR "</NR><original>" original_line "</original><extracted>" line "</extracted>" | "cat >&2"
+		print "Skipping line " NR ". " line | "cat >&2"
 		close("cat >&2")
 	}
 }
 
 # Extract domain name from regex line
-function extract_regex(line, original_line) {
+function extract_regex(line) {
 	# Expand the lines like (aa|bb|cc) into multiple records
 	pos = match(line, /\([A-Za-z0-9\.\|]+\)/)
 	if (pos != 0) {
@@ -66,7 +63,7 @@ function extract_regex(line, original_line) {
 		for (i = 1; i <= n; i++) {
 			expanded_line = line
 			sub(/\([A-Za-z0-9\.\|]+\)/, arr[i], expanded_line)
-			extract_regex(expanded_line, original_line)
+			extract_regex(expanded_line)
 		}
 	} else {
 		sub(/.*:\\\/\\\//, "", line)    # remove everything till :\/\/ in regex, :// in plain text, such as http:// https://
@@ -74,6 +71,6 @@ function extract_regex(line, original_line) {
 		gsub(/\[.*\]\+/, "", line)      # remove [...]
 		sub(/\\\/.*/, "", line)         # remove everything from \/ in regex, / in plaint text
 		gsub(/\\\./, ".", line)         # replace \. to .
-		extract(line, original_line)
+		extract(line)
 	}
 }

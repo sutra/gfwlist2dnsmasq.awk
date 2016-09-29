@@ -46,7 +46,11 @@ function extract(line) {
 	sub(/\*/, "", line)      # remove *
 	sub(/^\./, "", line)     # remove leading dot
 
-	if (match(line, /([A-Za-z0-9\-]+\.)+[A-Za-z0-9\-]+/)) {
+	if (line ~ /^((([0-9]{1,2})|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]{1,2})|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))$/) {
+		# IPv4 string
+		print "Skipping line " NR ". " line | "cat >&2"
+		close("cat >&2")
+	} else if (line ~ /([A-Za-z0-9\-]+\.)+[A-Za-z0-9\-]+/) {
 		domains[++domain_count] = line
 	} else {
 		print "Skipping line " NR ". " line | "cat >&2"

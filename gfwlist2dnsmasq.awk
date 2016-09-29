@@ -44,12 +44,8 @@ BEGIN {
 	print "# updated on " now
 	print "#"
 
-	if (host == "") {
-		host = "127.0.0.1"
-	}
-	if (port == "") {
-		port = 5353
-	}
+	host = host != "" ? host : "127.0.0.1"
+	port = port != "" ? port : 5353
 }
 {
 	original_line = $0

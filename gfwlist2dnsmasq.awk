@@ -1,53 +1,33 @@
 #!/usr/bin/awk -f
 
 BEGIN {
+	host = host != "" ? host : "127.0.0.1"
+	port = port != "" ? port : 5353
+
 	"date \"+%Y-%m-%d %H:%M:%S\"" | getline now
 	print "# gfw list ipset rules for dnsmasq"
 	print "# updated on " now
 	print "#"
-
-	host = host != "" ? host : "127.0.0.1"
-	port = port != "" ? port : 5353
 }
 
 {
 	original_line = $0
 
 	if (/^$/ || /^#/ || /^\!/ || /^\[/ || /^@@/) {
-		# Empty line
-
-		# #
-		# comments in user_rule.txt
-
-		# !
-		# comments
-		# see https://adblockplus.org/en/filters#comments
-
-		# [
-		# comments
-
-		# @@
-		# whitelist
-		# see https://adblockplus.org/en/filters#whitelist
-	} else if (/^\|\|/) {
-		# ||
+		# Empty line, line starts with #, !, [ or @@
+		# https://adblockplus.org/en/filters#comments
+		# https://adblockplus.org/en/filters#whitelist
+	} else if (/(^\|\|)|(^\|)/) {
+		# Line starts with || or |
 		# https://adblockplus.org/en/filters#anchors
-		sub(/^\|\|/, "") # remove leading ||
-		extract($0, original_line)
-	} else if (/^\|/) {
-		# |
-		# https://adblockplus.org/en/filters#anchors
-		sub(/^\|/, "") # removing leading |
+		sub(/(^\|\|)|(^\|)/, "") # remove leading || or |
 		extract($0, original_line)
 	} else if (/^\/.*\/$/) {
-		# /.../
+		# Line in two slashs, like /.../
+		# regular expressions
 		# https://adblockplus.org/en/filters#regexps
-		sub(/^\//, "") # remove leading /
-		sub(/\/$/, "") # remove tailing /
+		gsub(/(^\/)|(\/$)/, "") # remove leading and tailing /
 		extract_regex($0, original_line)
-	} else if (/^\./) {
-		# start with dot
-		extract($0, original_line)
 	} else {
 		extract($0, original_line)
 	}
@@ -78,7 +58,6 @@ function extract(line, original_line) {
 
 # Extract domain name from regex line
 function extract_regex(line, original_line) {
-
 	# Expand the lines like (aa|bb|cc) into multiple records
 	pos = match(line, /\([A-Za-z0-9\.\|]+\)/)
 	if (pos != 0) {

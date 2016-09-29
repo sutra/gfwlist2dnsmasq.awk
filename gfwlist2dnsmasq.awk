@@ -12,6 +12,7 @@ function extract(line, original_line) {
 		domains[++domain_count] = line
 	} else {
 		print "[WARN] <NR>" NR "</NR><original>" original_line "</original><extracted>" line "</extracted>" | "cat >&2"
+		close("cat >&2")
 	}
 }
 
@@ -93,4 +94,5 @@ END {
 	for (i = 1; i <= domain_count; i++) {
 		printf "server=/.%s/%s#%d\n", domains[i], host, port | "sort | uniq"
 	}
+	close("sort | uniq")
 }

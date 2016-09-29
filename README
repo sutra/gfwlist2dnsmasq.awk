@@ -1,6 +1,9 @@
 Convert gfwlist into dnsmasq configuration file.
 
+
 How to use:
+
+For BSD/macOS users:
 
 curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
     | base64 -D \
@@ -13,6 +16,11 @@ curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
     | base64 -D \
     | awk -v 'host=127.0.0.1' -v 'port=5353' -f gfwlist2dnsmasq.awk - /path/to/user_rule.txt \
     > gfwlist.conf
+
+For Linux users:
+
+Change the above base64 -D to base64 -d.
+
 
 user_rule.txt example:
 # comment line

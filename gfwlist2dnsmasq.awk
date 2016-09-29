@@ -56,8 +56,6 @@ BEGIN {
 	if (port == "") {
 		port = 5353
 	}
-
-	domain_count = 0
 }
 {
 	original_line = $0

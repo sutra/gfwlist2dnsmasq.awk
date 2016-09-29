@@ -1,11 +1,5 @@
 #!/usr/bin/awk -f
 
-# Add domain name to global variable domains.
-function add(domain) {
-	domain_count = domain_count + 1
-	domains[domain_count] = domain
-}
-
 # Extract domain name from non-regex line
 function extract(line, original_line) {
 	sub(/.*:\/\//, "", line) # remove everything till ://, such as http:// https://
@@ -14,8 +8,8 @@ function extract(line, original_line) {
 	sub(/\*/, "", line)      # remove *
 	sub(/^\./, "", line)     # remove leading dot
 
-	if (match(line, /([a-zA-Z0-9\-]+\.)+[a-zA-Z0-9\-]+/)) {
-		add(line)
+	if (match(line, /([A-Za-z0-9\-]+\.)+[A-Za-z0-9\-]+/)) {
+		domains[++domain_count] = line
 	} else {
 		print "[WARN] <NR>" NR "</NR><original>" original_line "</original><extracted>" line "</extracted>" | "cat >&2"
 	}
@@ -25,13 +19,13 @@ function extract(line, original_line) {
 function extract_regex(line, original_line) {
 
 	# Expand the lines like (aa|bb|cc) into multiple records
-	pos = match(line, /\([a-zA-Z0-9\.\|]+\)/)
+	pos = match(line, /\([A-Za-z0-9\.\|]+\)/)
 	if (pos != 0) {
 		in_bracket = substr(line, RSTART + 1, RLENGTH - 2)
 		n = split(in_bracket, arr, "|")
 		for (i = 1; i <= n; i++) {
 			expanded_line = line
-			sub(/\([a-zA-Z0-9\.\|]+\)/, arr[i], expanded_line)
+			sub(/\([A-Za-z0-9\.\|]+\)/, arr[i], expanded_line)
 			extract_regex(expanded_line, original_line)
 		}
 	} else {

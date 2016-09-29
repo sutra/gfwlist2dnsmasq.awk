@@ -60,21 +60,22 @@ BEGIN {
 {
 	original_line = $0
 
-	if (/^#/) {
+	if (/^$/ || /^#/ || /^\!/ || /^\[/ || /^@@/) {
+		# Empty line
+
 		# #
 		# comments in user_rule.txt
-	} else if (/^\!/) {
+
 		# !
-		# https://adblockplus.org/en/filters#comments
 		# comments
-	} else if (/^\[/) {
+		# see https://adblockplus.org/en/filters#comments
+
 		# [
 		# comments
-	} else if (/^@@/) {
+
 		# @@
-		# https://adblockplus.org/en/filters#whitelist
-	} else if (/^$/) {
-		# Empty line
+		# whitelist
+		# see https://adblockplus.org/en/filters#whitelist
 	} else if (/^\|\|/) {
 		# ||
 		# https://adblockplus.org/en/filters#anchors

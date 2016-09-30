@@ -3,23 +3,23 @@ Convert gfwlist into dnsmasq configuration file.
 
 How to use:
 
-For BSD/macOS users:
+For BSD users:
 
-curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt > /tmp/gfwlist.txt \
-    && base64 -D /tmp/gfwlist.txt \
-    | awk -v 'host=127.0.0.1' -v 'port=5353' -f gfwlist2dnsmasq.awk \
-    > gfwlist.conf
-
-or with custom rule file /path/to/user_rule.txt:
-
-curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt > /tmp/gfwlist.txt \
-    && base64 -D /tmp/gfwlist.txt \
-    | awk -v 'host=127.0.0.1' -v 'port=5353' -f gfwlist2dnsmasq.awk - /path/to/user_rule.txt \
-    > gfwlist.conf
+#!/bin/sh
+curl -s -o /tmp/gfwlist.txt https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
+	&& base64 -D /tmp/gfwlist.txt \
+	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2dnsmasq.awk -v 'host=127.0.0.1' -v 'port=5353' - /path/to/user_rule.txt \
+	> /usr/local/etc/dnsmasq.d/gfwlist.conf 2>/dev/null \
+	&& service dnsmasq restart
 
 For Linux users:
 
-Change the above base64 -D to base64 -d.
+#!/bin/sh
+curl -s -o /tmp/gfwlist.txt https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
+	&& base64 -d /tmp/gfwlist.txt \
+	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2dnsmasq.awk -v 'host=127.0.0.1' -v 'port=5353' - /path/to/user_rule.txt \
+	> /etc/dnsmasq.d/gfwlist.conf 2>/dev/null \
+	&& service dnsmasq restart
 
 
 user_rule.txt example:

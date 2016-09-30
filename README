@@ -5,15 +5,15 @@ How to use:
 
 For BSD/macOS users:
 
-curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
-    | base64 -D \
+curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt > /tmp/gfwlist.txt \
+    && base64 -D /tmp/gfwlist.txt \
     | awk -v 'host=127.0.0.1' -v 'port=5353' -f gfwlist2dnsmasq.awk \
     > gfwlist.conf
 
 or with custom rule file /path/to/user_rule.txt:
 
-curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
-    | base64 -D \
+curl -s https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt > /tmp/gfwlist.txt \
+    && base64 -D /tmp/gfwlist.txt \
     | awk -v 'host=127.0.0.1' -v 'port=5353' -f gfwlist2dnsmasq.awk - /path/to/user_rule.txt \
     > gfwlist.conf
 

@@ -22,6 +22,13 @@ curl -s -o /tmp/gfwlist.txt https://raw.githubusercontent.com/gfwlist/gfwlist/ma
 	&& service dnsmasq restart
 
 
+Supported variables passing by -v parameter:
+
+	host: the host of dns server, default is 127.0.0.1
+	port: the port of dns server, default is 5353
+	format: the format to output for each line, default is server=/.%s/%s#%d\n
+
+
 user_rule.txt example:
 # comment line
 ! comment line as well

@@ -6,18 +6,22 @@ How to use:
 For BSD users:
 
 #!/bin/sh
-curl -s -o /tmp/gfwlist.txt https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
+curl -s -o /tmp/gfwlist.txt \
+		https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
 	&& base64 -D /tmp/gfwlist.txt \
-	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2dnsmasq.awk -v 'host=127.0.0.1' -v 'port=5353' - /path/to/user_rule.txt \
+	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2dnsmasq.awk \
+		-v 'host=127.0.0.1' -v 'port=5353' - /path/to/user_rule.txt \
 	> /usr/local/etc/dnsmasq.d/gfwlist.conf 2>/dev/null \
 	&& service dnsmasq restart
 
 For Linux users:
 
 #!/bin/sh
-curl -s -o /tmp/gfwlist.txt https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
+curl -s -o /tmp/gfwlist.txt \
+		https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
 	&& base64 -d /tmp/gfwlist.txt \
-	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2dnsmasq.awk -v 'host=127.0.0.1' -v 'port=5353' - /path/to/user_rule.txt \
+	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2dnsmasq.awk \
+		-v 'host=127.0.0.1' -v 'port=5353' - /path/to/user_rule.txt \
 	> /etc/dnsmasq.d/gfwlist.conf 2>/dev/null \
 	&& service dnsmasq restart
 
@@ -26,7 +30,7 @@ Supported variables passing by -v parameter:
 
 	host: the host of dns server, default is 127.0.0.1
 	port: the port of dns server, default is 5353
-	format: the format to output for each line, default is server=/.%s/%s#%d\n
+	format: the output format for each line, default is server=/.%s/%s#%d\n
 
 
 user_rule.txt example:

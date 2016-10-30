@@ -1,16 +1,5 @@
 #!/usr/bin/awk -f
 
-BEGIN {
-	host = host != "" ? host : "127.0.0.1"
-	port = port != "" ? port : 5353
-	format = format != "" ? format : "server=/.%s/%s#%d\n"
-
-	"date \"+%Y-%m-%d %H:%M:%S\"" | getline now
-	print "# gfw list ipset rules for dnsmasq"
-	print "# updated on " now
-	print "#"
-}
-
 {
 	if (/^$/ || /^#/ || /^\!/ || /^\[/ || /^@@/) {
 		# Empty line, or line starts with #, !, [ or @@
@@ -33,7 +22,7 @@ BEGIN {
 
 END {
 	for (i = 1; i <= domain_count; i++) {
-		printf format, domains[i], host, port | "sort | uniq"
+		print domains[i] | "sort | uniq"
 	}
 	close("sort | uniq")
 }
@@ -50,7 +39,7 @@ function extract(line) {
 		# IPv4 string
 		print "Skipping line " NR ". " line | "cat >&2"
 		close("cat >&2")
-	} else if (line ~ /([A-Za-z0-9\-]+\.)+[A-Za-z0-9\-]+/) {
+	} else if (line ~ /^([A-Za-z0-9\-]+\.)+[A-Za-z0-9\-]+$/) {
 		domains[++domain_count] = line
 	} else {
 		print "Skipping line " NR ". " line | "cat >&2"

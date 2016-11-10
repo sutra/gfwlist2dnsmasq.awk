@@ -11,7 +11,7 @@ curl -s -o /tmp/gfwlist.txt \
 	&& base64 -D /tmp/gfwlist.txt \
 	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2domainlist.awk \
 		- /path/to/user_rule.txt \
-	| grep -F -v -f $(cd "$(dirname "$0")"; pwd)/skip_domain.txt \
+	| grep -F -v -f /path/to/skip_domain.txt \
 	| awk -f $(cd "$(dirname "$0")"; pwd)/domainlist2dnsmasq.awk \
 		-v 'host=127.0.0.1' -v 'port=5353' -v 'ipset=gfwlist' - \
 	> /usr/local/etc/dnsmasq.d/gfwlist.conf 2>/dev/null \
@@ -25,7 +25,7 @@ curl -s -o /tmp/gfwlist.txt \
 	&& base64 -d /tmp/gfwlist.txt \
 	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2domainlist.awk \
 		- /path/to/user_rule.txt \
-	| grep -F -v -f $(cd "$(dirname "$0")"; pwd)/skip_domain.txt \
+	| grep -F -v -f /path/to/skip_domain.txt \
 	| awk -f $(cd "$(dirname "$0")"; pwd)/domainlist2dnsmasq.awk \
 		-v 'host=127.0.0.1' -v 'port=5353' -v 'ipset=gfwlist' - \
 	> /etc/dnsmasq.d/gfwlist.conf 2>/dev/null \

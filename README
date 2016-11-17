@@ -6,7 +6,7 @@ How to use:
 For BSD users:
 
 #!/bin/sh
-curl -s -o /tmp/gfwlist.txt \
+curl -sf -o /tmp/gfwlist.txt \
 	https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
 	&& base64 -D /tmp/gfwlist.txt \
 	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2domainlist.awk \
@@ -20,7 +20,7 @@ curl -s -o /tmp/gfwlist.txt \
 For Linux users:
 
 #!/bin/sh
-curl -s -o /tmp/gfwlist.txt \
+curl -sf -o /tmp/gfwlist.txt \
 	https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
 	&& base64 -d /tmp/gfwlist.txt \
 	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2domainlist.awk \

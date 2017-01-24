@@ -1,10 +1,11 @@
-Convert gfwlist into dnsmasq configuration file.
+# Convert gfwlist into dnsmasq configuration file.
 
 
-How to use:
+## How to use:
 
-For BSD users:
+## For BSD users:
 
+```
 #!/bin/sh
 curl -sf -o /tmp/gfwlist.txt \
 	https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
@@ -16,9 +17,11 @@ curl -sf -o /tmp/gfwlist.txt \
 		-v 'host=127.0.0.1' -v 'port=5353' -v 'ipset=gfwlist' - \
 	> /usr/local/etc/dnsmasq.d/gfwlist.conf 2>/dev/null \
 	&& service dnsmasq restart
+```
 
-For Linux users:
+## For Linux users:
 
+```
 #!/bin/sh
 curl -sf -o /tmp/gfwlist.txt \
 	https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
@@ -30,7 +33,7 @@ curl -sf -o /tmp/gfwlist.txt \
 		-v 'host=127.0.0.1' -v 'port=5353' -v 'ipset=gfwlist' - \
 	> /etc/dnsmasq.d/gfwlist.conf 2>/dev/null \
 	&& service dnsmasq restart
-
+```
 
 Supported variables passing by -v parameter:
 
@@ -43,6 +46,8 @@ Supported variables passing by -v parameter:
 
 
 user_rule.txt example:
+```
 # comment line
 ! comment line as well
 example.net
+```

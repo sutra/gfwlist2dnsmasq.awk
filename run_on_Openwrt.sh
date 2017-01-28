@@ -16,4 +16,4 @@ wget --no-check-certificate -O /tmp/gfwlist.txt \
 	| awk -f $(cd "$(dirname "$0")"; pwd)/domainlist2dnsmasq.awk \
 		-v 'host='$HOST -v 'port='$PORT -v 'ipset='$IPSET - \
 	> /etc/dnsmasq.d/gfwlist.conf 2>/dev/null \
-	&& echo '[INFO] dnsmasq restarting...'&& /etc/init.d/dnsmasq restarts
+	&& echo '[INFO] dnsmasq restarting...'&& /etc/init.d/dnsmasq restart

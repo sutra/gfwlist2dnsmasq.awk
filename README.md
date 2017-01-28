@@ -5,7 +5,7 @@
 
 ## For BSD users:
 
-```
+```sh
 #!/bin/sh
 curl -sf -o /tmp/gfwlist.txt \
 	https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
@@ -21,7 +21,7 @@ curl -sf -o /tmp/gfwlist.txt \
 
 ## For Linux users:
 
-```
+```sh
 #!/bin/sh
 curl -sf -o /tmp/gfwlist.txt \
 	https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \

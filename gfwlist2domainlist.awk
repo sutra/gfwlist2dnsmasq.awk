@@ -32,7 +32,7 @@ function extract(line) {
 	sub(/.*:\/\//, "", line) # remove everything till ://, such as http:// https://
 	sub(/\/.*/, "", line)    # remove everything from /
 	sub(/:.*/, "", line)     # remove everything from :
-	sub(/\*/, "", line)      # remove *
+	sub(/[^\.]*\*[^\.]*/, "", line)      # remove segments(dot separated) contain *
 	sub(/^\./, "", line)     # remove leading dot
 
 	if (line ~ /^((([0-9]{1,2})|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]{1,2})|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))$/) {

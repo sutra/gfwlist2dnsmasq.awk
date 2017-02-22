@@ -29,11 +29,21 @@ END {
 
 # Extract domain name from non-regex line
 function extract(line) {
-	sub(/.*:\/\//, "", line) # remove everything till ://, such as http:// https://
-	sub(/\/.*/, "", line)    # remove everything from /
-	sub(/:.*/, "", line)     # remove everything from :
-	sub(/[^\.]*\*[^\.]*/, "", line)      # remove segments(dot separated) contain *
-	sub(/^\./, "", line)     # remove leading dot
+
+	# Remove everything till ://, such as http:// https://
+	sub(/.*:\/\//, "", line)
+
+	# Remove everything from /
+	sub(/\/.*/, "", line)
+
+	# Remove everything from :
+	sub(/:.*/, "", line)
+
+	# Remove segments(dot separated) contain *
+	sub(/[^\.]*\*[^\.]*/, "", line)
+
+	# Remove leading dot
+	sub(/^\./, "", line)
 
 	if (line ~ /^((([0-9]{1,2})|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]{1,2})|(1[0-9]{2})|(2[0-4][0-9])|(25[0-5]))$/) {
 		# IPv4 string
@@ -60,11 +70,22 @@ function extract_regex(line) {
 			extract_regex(expanded_line)
 		}
 	} else {
-		sub(/.*:\\\/\\\//, "", line)    # remove everything till :\/\/ in regex(:// in plain text, such as http:// https://)
-		gsub(/\([^\)]+\)\*?/, "", line) # remove (...)*? such as ([^\/]+\.)
-		gsub(/\[.*\]\+/, "", line)      # remove [...]
-		sub(/\\\/.*/, "", line)         # remove everything from \/ in regex(/ in plaint text)
-		gsub(/\\\./, ".", line)         # replace \. to .
+
+		# Remove everything till :\/\/ in regex(:// in plain text, such as http:// https://)
+		sub(/.*:\\\/\\\//, "", line)
+
+		# Remove (...)*? such as ([^\/]+\.)
+		gsub(/\([^\)]+\)\*?/, "", line)
+
+		# Remove [...]
+		gsub(/\[.*\]\+/, "", line)
+
+		# Remove everything from \/ in regex(/ in plaint text)
+		sub(/\\\/.*/, "", line)
+
+		# Replace \. to .
+		gsub(/\\\./, ".", line)
+
 		extract(line)
 	}
 }

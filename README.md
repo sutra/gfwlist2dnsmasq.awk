@@ -3,7 +3,7 @@
 
 ## How to use:
 
-## For BSD users:
+## For macOS users:
 
 ```sh
 #!/bin/sh
@@ -19,7 +19,7 @@ curl -sf -o /tmp/gfwlist.txt \
 	&& service dnsmasq restart
 ```
 
-## For Linux users:
+## For BSD/Linux users:
 
 ```sh
 #!/bin/sh

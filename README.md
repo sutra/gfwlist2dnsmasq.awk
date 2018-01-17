@@ -3,24 +3,6 @@
 
 ## How to use:
 
-## For macOS users:
-
-```sh
-#!/bin/sh
-curl -sf -o /tmp/gfwlist.txt \
-	https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt \
-	&& base64 -D /tmp/gfwlist.txt \
-	| awk -f $(cd "$(dirname "$0")"; pwd)/gfwlist2domainlist.awk \
-		- /path/to/user_rule.txt \
-	| grep -F -v -f /path/to/skip_domain.txt \
-	| awk -f $(cd "$(dirname "$0")"; pwd)/domainlist2dnsmasq.awk \
-		-v 'host=127.0.0.1' -v 'port=5353' -v 'ipset=gfwlist' - \
-	> /usr/local/etc/dnsmasq.d/gfwlist.conf 2>/dev/null \
-	&& service dnsmasq restart
-```
-
-## For BSD/Linux users:
-
 ```sh
 #!/bin/sh
 curl -sf -o /tmp/gfwlist.txt \

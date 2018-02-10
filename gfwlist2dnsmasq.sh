@@ -6,12 +6,13 @@ host="127.0.0.1"
 port="5353"
 ipset="gfwlist"
 noipset=""
+format=""
 user_rule=""
 skip_domain="/dev/null"
 
 usage() {
 cat << EOF
-Usage: $0 [-i <url>] [-o <file>] [-h <host>] [-p <port>] [-s <ipset>] [-S] [[-u <file>]...] [-k <file>] [-h]
+Usage: $0 [-i <url>] [-o <file>] [-h <host>] [-p <port>] [-s <ipset>] [-S] [-f format] [[-u <file>]...] [-k <file>] [-h]
 	-i <url>
 		URL of gfwlist.txt,
 		default is https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
@@ -26,6 +27,9 @@ Usage: $0 [-i <url>] [-o <file>] [-h <host>] [-p <port>] [-s <ipset>] [-S] [[-u 
 		The ipset of the output, default is gfwlist.
 	-S
 		Do not print the ipset line to the output.
+	-f
+		The output format for each line,
+		default is server=/.%domain/%host#%port\nipset=/.%domain/gfwlist\n
 	-u <file>
 		User rule file.
 	-k <file>
@@ -35,7 +39,7 @@ Usage: $0 [-i <url>] [-o <file>] [-h <host>] [-p <port>] [-s <ipset>] [-S] [[-u 
 EOF
 }
 
-while getopts ":i:o:h:p:s:Su:k:" o; do
+while getopts ":i:o:h:p:s:Sf:u:k:" o; do
 	case "${o}" in
 		i)
 			gfwlist_url="${OPTARG}"
@@ -54,6 +58,9 @@ while getopts ":i:o:h:p:s:Su:k:" o; do
 			;;
 		S)
 			noipset="noipset"
+			;;
+		f)
+			format="${OPTARG}"
 			;;
 		u)
 			if [ -z "${OPTARG}" -o ! -r "${OPTARG}" ]; then
@@ -96,6 +103,7 @@ curl -sf -o "${gfwlist}" \
 		-v "port=${port}" \
 		-v "ipset=${ipset}" \
 		-v "noipset=${noipset}" \
+		-v "format=${format}" \
 		- \
 	> "${tmp_gfwlist_dnsmasq_conf}" 2>/dev/null \
 	&& \

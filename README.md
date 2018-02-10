@@ -24,7 +24,7 @@ Supported variables passing by -v parameter:
 	ipset: the ipset of the output, default is gfwlist
 	noipset: do not print the ipset line to the output
 	format: the output format for each line,
-		default is server=/.%domain/%host#%port\nipset=/.%domain/gfwlist\n"
+		default is server=/.%domain/%host#%port\nipset=/.%domain/gfwlist\n
 
 
 user_rule.txt example:

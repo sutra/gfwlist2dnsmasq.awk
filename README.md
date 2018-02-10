@@ -19,8 +19,8 @@ curl -sf -o /tmp/gfwlist.txt \
 
 Supported variables passing by -v parameter:
 
-	host: the host of dns server, default is 127.0.0.1
-	port: the port of dns server, default is 5353
+	host: the host of DNS server, default is 127.0.0.1
+	port: the port of DNS server, default is 5353
 	ipset: the ipset of the output, default is gfwlist
 	noipset: do not print the ipset line to the output
 	format: the output format for each line,

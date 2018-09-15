@@ -80,7 +80,7 @@ function extract_regex(line) {
 		# Remove [...]
 		gsub(/\[.*\]\+/, "", line)
 
-		# Remove everything from \/ in regex(/ in plaint text)
+		# Remove everything from \/ in regex(/ in plain text)
 		sub(/\\\/.*/, "", line)
 
 		# Replace \. to .

@@ -49,7 +49,7 @@ function extract(line) {
 		# IPv4 string
 		print "Skipping line " NR ". " line | "cat >&2"
 		close("cat >&2")
-	} else if (line ~ /^([A-Za-z0-9\-]+\.)+[A-Za-z0-9\-]+$/) {
+	} else if (line ~ /^([A-Za-z0-9\-]+\.)+(xn\-\-)?[A-Za-z0-9]+$/) {
 		domains[++domain_count] = line
 	} else {
 		print "Skipping line " NR ". " line | "cat >&2"
